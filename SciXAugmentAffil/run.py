@@ -3,18 +3,18 @@ import asyncio
 import os
 
 from API import template_server
-from TEMPLATE import template
+from affildb import template
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(help="commands", dest="action")
-    subparsers.add_parser("TEMPLATE_API", help="Initialize TEMPLATE gRPC API")
-    subparsers.add_parser("TEMPLATE_APP", help="Initialize TEMPLATE Working Unit")
+    subparsers.add_parser("affildb_API", help="Initialize affildb gRPC API")
+    subparsers.add_parser("affildb_APP", help="Initialize affildb Working Unit")
     args = parser.parse_args()
 
-    if args.action == "TEMPLATE_APP":
-        proj_home = os.path.realpath("/app/SciXTEMPLATE/")
+    if args.action == "affildb_APP":
+        proj_home = os.path.realpath("/app/SciXAugmentAffil/")
         template.init_pipeline(proj_home)
 
-    elif args.action == "TEMPLATE_API":
+    elif args.action == "affildb_API":
         asyncio.run(template_server.serve())

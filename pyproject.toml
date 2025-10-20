@@ -1,8 +1,8 @@
 [project]
-name = "SciXTEMPLATE"
+name = "SciXAugmentAffil"
 version = "0.0.1"
-description = "The primary TEMPLATE unit for the new NASA Science Explorer (NASA SciX) backoffice architecture"
-authors = [{ name = "First Last", email = "name@domain.root"}]
+description = "SciX Augment Pipeline for Affiliations"
+authors = [{ name = "Matthew Templeton", email = "adshelp@cfa.harvard.edu"}]
 license = { text = "GPL-3.0" }
 readme = "README.md"
 #repository = "https://github.com/adsabs/SciXTEMPLATEPipeline"
@@ -15,7 +15,7 @@ classifiers = [
 ]
 
 packages = [
-    "SciXTEMPLATE",
+    "SciXAugmentAffil",
 ]
 
 dependencies = [
@@ -23,7 +23,6 @@ dependencies = [
     'fastavro==1.7.2',
     'avro==1.11.1',
     'redis==4.5.4',
-    'adsingestp @ git+https://github.com/adsabs/ADSIngestParser.git@b1b18900e5c70b0c3f044443bed53b53c73942f4',
     'alembic==1.8.1',
     'sqlalchemy==2.0.21',
     'psycopg2==2.9.5',
@@ -37,7 +36,7 @@ dependencies = [
 ]
 
 [project.urls]
-Source = "https://github.com/adsabs/SciXTEMPLATEPipeline"
+Source = "https://github.com/adsabs/SciXAugmentAffil"
 
 [project.optional-dependencies]
 dev = [
@@ -63,17 +62,17 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov=SciXTEMPLATE/TEMPLATE --cov=SciXTEMPLATE/API --cov-report=term-missing"
+addopts = "--cov=SciXAugmentAffil/affildb --cov=SciXAugmentAffil/API --cov-report=term-missing"
 cache_dir = ".tmp/"
 testpaths = [
-    "SciXTEMPLATE/tests",
+    "SciXAugmentAffil/tests",
 ]
 pythonpath = [
-    "SciXTEMPLATE/",
+    "SciXAugmentAffil/",
 ]
 
 [tool.coverage.run]
-data_file = "SciXTEMPLATE/.coverage"
+data_file = "SciXAugmentAffil/.coverage"
 
 [tool.coverage.report]
 skip_empty = true
@@ -81,7 +80,7 @@ skip_covered = true
 
 [tool.isort]
 profile = "black"
-known_first_party = ["TEMPLATE", "API", "tests",]
+known_first_party = ["affildb", "API", "tests",]
 
 [tool.black]
 line-length = 99 # override black's default line-length
