@@ -12,7 +12,10 @@ from SciXPipelineUtils.s3_methods import load_s3_providers
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from TEMPLATE import db
+from augment import db
+
+# Can we abstract this so that you don't have to add the following line?
+from affildb import augmenter
 
 
 def init_pipeline(proj_home):
@@ -27,30 +30,30 @@ def init_pipeline(proj_home):
     consumer: The kafka consumer for the pipeline
     producer: The kafka producer for the pipeline
     """
-    app = TEMPLATE_APP(proj_home)
+    app = AugmentApp(proj_home)
     app.schema_client = SchemaRegistryClient({"url": app.config.get("SCHEMA_REGISTRY_URL")})
-    schema = utils.get_schema(app, app.schema_client, app.config.get("TEMPLATE_INPUT_SCHEMA"))
+    schema = utils.get_schema(app, app.schema_client, app.config.get("AUGMENT_INPUT_SCHEMA"))
     consumer = AvroConsumer(
         {
             "bootstrap.servers": app.config.get("KAFKA_BROKER"),
             "schema.registry.url": app.config.get("SCHEMA_REGISTRY_URL"),
             "auto.offset.reset": "latest",
-            "group.id": "TemplatePipeline1",
+            "group.id": "AugmentPipeline1",
         },
         reader_value_schema=schema,
     )
-    consumer.subscribe([app.config.get("TEMPLATE_INPUT_TOPIC", "TEMPLATE")])
+    consumer.subscribe([app.config.get("AUGMENT_INPUT_TOPIC", "AUGMENT")])
     producer = AvroProducer(
         {
             "bootstrap.servers": app.config.get("KAFKA_BROKER"),
             "schema.registry.url": app.config.get("SCHEMA_REGISTRY_URL"),
         }
     )
-    app.logger.info("Starting TEMPLATE APP")
+    app.logger.info("Starting AugmentApp")
     app.template_consumer(consumer, producer)
 
 
-class TEMPLATE_APP:
+class AugmentApp:
     @contextmanager
     def session_scope(self):
         """Provide a transactional scope for postgres."""
@@ -65,13 +68,13 @@ class TEMPLATE_APP:
             session.close()
 
     def _consume_from_topic(self, consumer):
-        self.logger.debug("Consuming from Template Topic")
+        self.logger.debug("Consuming from Augment Topic")
         return consumer.poll()
 
     def _init_logger(self):
         logging.basicConfig(level=logging.DEBUG)
         self.logger = logging.getLogger(__name__)
-        self.logger.info("Starting Template Service Logging")
+        self.logger.info("Starting Augment Service Logging")
 
     def __init__(self, proj_home):
         """
@@ -100,20 +103,20 @@ class TEMPLATE_APP:
             decode_responses=True,
         )
 
-    def template_consumer(self, consumer, producer):
+    def augment_consumer(self, consumer, producer):
         """
         Ingests a message from the Pipeline input topic and passes it to the consumer task
         """
         while True:
             msg = self._consume_from_topic(consumer)
             if msg:
-                self.template_task(msg, producer)
+                self.augment_task(msg, producer)
             else:
                 self.logger.debug("No new messages")
                 time.sleep(2)
                 continue
 
-    def template_task(self, msg, producer):
+    def augment_task(self, msg, producer):
         """
         input:
         msg: The consumed msg from the Pipeline input topic
@@ -138,11 +141,18 @@ class TEMPLATE_APP:
             % bytes(str(tstamp), "utf-8")
         )
         self.logger.debug("task_args:{}".format(task_args))
-        """
 
-            Jobs codes go here
+        # Augment "task" gets called here
+        # Again, can we abstract this?
+        if job_request.get("task", None) == "AUGMENT":
+            if task_args.get("augment_type", None) == "affil":
+                job_request["status"] = augmenter.augment_task(
+                    self, job_request, producer
+                )
+        else:
+            job_request["status"] = "Error"
+        # End of Augment "task" block
 
-        """
         db.update_job_status(self, job_request["hash"], status=job_request["status"])
         db.write_status_redis(
             self.redis,

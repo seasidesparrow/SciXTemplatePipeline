@@ -3,16 +3,16 @@ import asyncio
 import os
 
 from API import template_server
-from TEMPLATE import template
+from augment import augment
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(help="commands", dest="action")
     subparsers.add_parser("TEMPLATE_API", help="Initialize TEMPLATE gRPC API")
-    subparsers.add_parser("TEMPLATE_APP", help="Initialize TEMPLATE Working Unit")
+    subparsers.add_parser("AugmentApp", help="Initialize TEMPLATE Working Unit")
     args = parser.parse_args()
 
-    if args.action == "TEMPLATE_APP":
+    if args.action == "AugmentApp":
         proj_home = os.path.realpath("/app/SciXTEMPLATE/")
         template.init_pipeline(proj_home)
 
