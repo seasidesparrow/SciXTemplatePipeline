@@ -30,7 +30,7 @@ dependencies = [
     'six==1.16.0',
     'python-dateutil==2.8.1',
     'requests==2.29.0',
-    'SciXPipelineUtils @ git+https://github.com/adsabs/SciXPipelineUtils.git@04776d498e3b9c87149c62dcb5a20d0dc9cf7851',
+    'SciXPipelineUtils @ git+https://github.com/adsabs/SciXPipelineUtils.git@7f32c5660f6d62b62b152c984c4c2a3e401bb308',
     'affildb @ git+https://github.com/seasidesparrow/ADSAffilDB@redesign.2025',
     'sphinx-rtd-theme',
 
