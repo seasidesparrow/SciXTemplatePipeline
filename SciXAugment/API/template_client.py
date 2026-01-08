@@ -11,7 +11,7 @@ from confluent_kafka.schema_registry import SchemaRegistryClient
 from SciXPipelineUtils.avro_serializer import AvroSerialHelper
 from SciXPipelineUtils.utils import get_schema
 
-import SciXTEMPLATE.API.grpc_modules.template_grpc as template_grpc
+import SciXAugment.API.grpc_modules.template_grpc as template_grpc
 
 
 class Logging:
@@ -23,7 +23,7 @@ def input_parser(cli_args):
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(help="commands", dest="action")
     process_parser = subparsers.add_parser(
-        "TEMPLATE_INIT", help="Initialize a job with given inputs"
+        "AUGMENT_INIT", help="Initialize a job with given inputs"
     )
     process_parser.add_argument(
         "--task_args",
@@ -48,7 +48,7 @@ def input_parser(cli_args):
     )
 
     process_parser = subparsers.add_parser(
-        "TEMPLATE_MONITOR", help="Initialize a job with given inputs"
+        "AUGMENT_MONITOR", help="Initialize a job with given inputs"
     )
     process_parser.add_argument(
         "--job_id", action="store", dest="job_id", type=str, help="Job ID string to query."
@@ -66,7 +66,7 @@ def input_parser(cli_args):
 
 def output_message(args):
     s = {}
-    if args.action == "TEMPLATE_INIT":
+    if args.action == "AUGMENT_INIT":
         if args.job_args:
             task_args = json.loads(args.job_args)
             s["task_args"] = task_args
@@ -74,7 +74,7 @@ def output_message(args):
                 s["task_args"]["ingest"] = bool(task_args["ingest"])
         s["task_args"]["persistence"] = args.persistence
         s["task"] = args.task
-    elif args.action == "TEMPLATE_MONITOR":
+    elif args.action == "AUGMENT_MONITOR":
         s["task"] = "MONITOR"
         s["task_args"] = {"persistence": args.persistence}
         s["hash"] = args.job_id

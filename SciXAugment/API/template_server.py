@@ -24,7 +24,7 @@ from API.grpc_modules.template_grpc import (
     add_TemplateInitServicer_to_server,
     add_TemplateMonitorServicer_to_server,
 )
-from TEMPLATE import db
+from augment import db
 
 HERE = Path(__file__).parent
 proj_home = str(HERE / "..")
@@ -52,7 +52,7 @@ class Listener(Thread):
         self.subscription = self.redis.pubsub()
         self.end = False
 
-    def subscribe(self, channel_name="TEMPLATE_statuses"):
+    def subscribe(self, channel_name="Augment_statuses"):
         self.subscription.subscribe(channel_name)
 
     def get_status_redis(self, job_id, logger):
@@ -76,7 +76,7 @@ class Listener(Thread):
 
 class Template(TemplateInitServicer):
     def __init__(self, producer, schema, schema_client, logger):
-        self.topic = config.get("TEMPLATE_INPUT_TOPIC")
+        self.topic = config.get("AUGMENT_INPUT_TOPIC")
         self.timestamp = datetime.now().timestamp()
         self.producer = producer
         self.schema = schema
@@ -104,8 +104,8 @@ class Template(TemplateInitServicer):
     def persistent_connection(self, job_request, listener):
         hash = job_request.get("hash")
         msg = db.get_job_status_by_job_hash(self, [str(hash)]).name
-        self.logger.info("TEMPLATE: User requested persitent connection.")
-        self.logger.info("TEMPLATE: Latest message is: {}".format(msg))
+        self.logger.info("AUGMENT: User requested persitent connection.")
+        self.logger.info("AUGMENT: Latest message is: {}".format(msg))
         job_request["status"] = str(msg)
         yield job_request
         if msg == "Error":
@@ -141,7 +141,7 @@ class Template(TemplateInitServicer):
                     continue
                 try:
                     msg = next(listener.get_status_redis(hash, self.logger))
-                    self.logger.debug("TEMPLATE: Redis returned: {} for job_id".format(msg))
+                    self.logger.debug("AUGMENT: Redis returned: {} for job_id".format(msg))
                 except Exception:
                     msg = ""
                     continue
@@ -149,7 +149,7 @@ class Template(TemplateInitServicer):
             else:
                 try:
                     msg = next(listener.get_status_redis(hash, self.logger))
-                    self.logger.debug("TEMPLATE: Redis published status: {}".format(msg))
+                    self.logger.debug("AUGMENT: Redis published status: {}".format(msg))
                 except Exception as e:
                     self.logger.error("failed to read message with error: {}.".format(e))
                     continue
@@ -215,7 +215,7 @@ async def serve() -> None:
     server = grpc.aio.server()
     app_log = Logging(logging)
     schema_client = SchemaRegistryClient({"url": config.get("SCHEMA_REGISTRY_URL")})
-    schema = utils.get_schema(app_log, schema_client, config.get("TEMPLATE_INPUT_SCHEMA"))
+    schema = utils.get_schema(app_log, schema_client, config.get("AUGMENT_INPUT_SCHEMA"))
     avroserialhelper = AvroSerialHelper(schema, app_log.logger)
     producer = AvroProducer(
         {
