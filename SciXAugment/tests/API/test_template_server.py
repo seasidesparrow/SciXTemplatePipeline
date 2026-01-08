@@ -12,7 +12,7 @@ from SciXPipelineUtils.utils import get_schema
 
 from API.grpc_modules import template_grpc
 from API.template_server import Listener, Logging, Template
-from TEMPLATE import db
+from Augment import db
 from tests.API import base
 from tests.common.mockschemaregistryclient import MockSchemaRegistryClient
 
@@ -29,9 +29,9 @@ class TemplateServer(TestCase):
         self.logger = Logging(logging)
         self.schema_client = MockSchemaRegistryClient()
         self.VALUE_SCHEMA_FILE = (
-            "SciXTEMPLATE/tests/stubdata/AVRO_schemas/TEMPLATEInputSchema.avsc"
+            "SciXAugment/tests/stubdata/AVRO_schemas/AugmentInputSchema.avsc"
         )
-        self.VALUE_SCHEMA_NAME = "TEMPLATEInputSchema"
+        self.VALUE_SCHEMA_NAME = "AugmentInputSchema"
         self.value_schema = open(self.VALUE_SCHEMA_FILE).read()
 
         self.schema_client.register(self.VALUE_SCHEMA_NAME, Schema(self.value_schema, "AVRO"))
@@ -39,9 +39,9 @@ class TemplateServer(TestCase):
         self.avroserialhelper = AvroSerialHelper(self.schema, self.logger.logger)
 
         OUTPUT_VALUE_SCHEMA_FILE = (
-            "SciXTEMPLATE/tests/stubdata/AVRO_schemas/TEMPLATEOutputSchema.avsc"
+            "SciXAugment/tests/stubdata/AVRO_schemas/AugmentOutputSchema.avsc"
         )
-        OUTPUT_VALUE_SCHEMA_NAME = "TEMPLATEOutputSchema"
+        OUTPUT_VALUE_SCHEMA_NAME = "AugmentOutputSchema"
         output_value_schema = open(OUTPUT_VALUE_SCHEMA_FILE).read()
 
         self.schema_client.register(OUTPUT_VALUE_SCHEMA_NAME, Schema(output_value_schema, "AVRO"))
@@ -82,7 +82,7 @@ class TemplateServer(TestCase):
         """
         A test the of INIT method for the gRPC server
         input:
-            s: AVRO message: TEMPLATEInputSchema
+            s: AVRO message: AugmentInputSchema
         """
         s = {
             "task_args": {
@@ -104,7 +104,7 @@ class TemplateServer(TestCase):
         """
         A test of the INIT method for the gRPC server with persistence
         input:
-            s: AVRO message: TEMPLATEInputSchema
+            s: AVRO message: AugmentInputSchema
         """
         s = {
             "task_args": {
@@ -142,7 +142,7 @@ class TemplateServer(TestCase):
         A test of the INIT method for the gRPC server with persistence
         where an error is returned by the redis server.
         input:
-            s: AVRO message: TEMPLATEInputSchema
+            s: AVRO message: AugmentInputSchema
         """
         s = {
             "task_args": {
@@ -180,7 +180,7 @@ class TemplateServer(TestCase):
         A test of the INIT method for the gRPC server with persistence
         where an error is returned from postgres.
         input:
-            s: AVRO message: TEMPLATEInputSchema
+            s: AVRO message: AugmentInputSchema
         """
         s = {
             "task_args": {
@@ -217,7 +217,7 @@ class TemplateServer(TestCase):
         """
         A test of the MONITOR method for the gRPC server
         input:
-            s: AVRO message: TEMPLATEInputSchema
+            s: AVRO message: AugmentInputSchema
         """
         s = {
             "task": "MONITOR",
@@ -242,7 +242,7 @@ class TemplateServer(TestCase):
         """
         A test of the MONITOR method for the gRPC server with persistence
         input:
-            s: AVRO message: TEMPLATEInputSchema
+            s: AVRO message: AugmentInputSchema
         """
         s = {
             "task": "MONITOR",
@@ -274,7 +274,7 @@ class TemplateServer(TestCase):
         A test of the MONITOR method for the gRPC server with persistence
         where an error is returned from postgres.
         input:
-            s: AVRO message: TEMPLATEInputSchema
+            s: AVRO message: AugmentInputSchema
         """
         s = {
             "task": "MONITOR",
@@ -306,7 +306,7 @@ class TemplateServer(TestCase):
         A test of the MONITOR method for the gRPC server with persistence
         where an error is returned from redis.
         input:
-            s: AVRO message: TEMPLATEInputSchema
+            s: AVRO message: AugmentInputSchema
         """
         s = {
             "task": "MONITOR",
@@ -340,7 +340,7 @@ class TemplateServer(TestCase):
         A test of the MONITOR method for the gRPC server with persistence
         where the job hash was not provided.
         input:
-            s: AVRO message: TEMPLATEInputSchema
+            s: AVRO message: AugmentInputSchema
         """
         s = {
             "task": "MONITOR",

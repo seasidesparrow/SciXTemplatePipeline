@@ -13,8 +13,8 @@ class TestTemplateClient(TestCase):
     def test_get_schema(self):
         logger = Logging(logging)
         schema_client = MockSchemaRegistryClient()
-        VALUE_SCHEMA_FILE = "SciXTEMPLATE/tests/stubdata/AVRO_schemas/TEMPLATEInputSchema.avsc"
-        VALUE_SCHEMA_NAME = "TEMPLATEInputSchema"
+        VALUE_SCHEMA_FILE = "SciXAugment/tests/stubdata/AVRO_schemas/AugmentInputSchema.avsc"
+        VALUE_SCHEMA_NAME = "AugmentInputSchema"
         value_schema = open(VALUE_SCHEMA_FILE).read()
 
         schema_client.register(VALUE_SCHEMA_NAME, Schema(value_schema, "AVRO"))
@@ -29,7 +29,7 @@ class TestTemplateClient(TestCase):
 
     def test_input_parser(self):
         input_args = [
-            "TEMPLATE_MONITOR",
+            "Augment_MONITOR",
             "--job_id",
             "'c98b5b0f5e4dce3197a4a9a26d124d036f293a9a90a18361f475e4f08c19f2da'",
         ]
@@ -41,7 +41,7 @@ class TestTemplateClient(TestCase):
         self.assertEqual(s["task"], "MONITOR")
 
         input_args = [
-            "TEMPLATE_INIT",
+            "AUGMENT_INIT",
             "--task",
             "SYMBOL1",
             "--task_args",

@@ -5,7 +5,7 @@ from unittest import TestCase
 import redis
 
 import API.template_server as hs
-from TEMPLATE.db import write_status_redis
+from augment.db import write_status_redis
 
 
 class TestRedisReadWrite(TestCase):
