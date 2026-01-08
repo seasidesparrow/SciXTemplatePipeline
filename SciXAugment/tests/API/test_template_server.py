@@ -12,7 +12,7 @@ from SciXPipelineUtils.utils import get_schema
 
 from API.grpc_modules import template_grpc
 from API.template_server import Listener, Logging, Template
-from Augment import db
+from augment import db
 from tests.API import base
 from tests.common.mockschemaregistryclient import MockSchemaRegistryClient
 
