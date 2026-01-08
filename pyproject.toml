@@ -5,7 +5,7 @@ description = "The primary data augmentation unit for the new NASA Science Explo
 authors = [{ name = "First Last", email = "name@domain.root"}]
 license = { text = "GPL-3.0" }
 readme = "README.md"
-#repository = "https://github.com/adsabs/SciXTEMPLATEPipeline"
+#repository = "https://github.com/seasidesparrow/SciXTemplatePipeline"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Developers",
@@ -31,6 +31,7 @@ dependencies = [
     'python-dateutil==2.8.1',
     'requests==2.29.0',
     'SciXPipelineUtils @ git+https://github.com/adsabs/SciXPipelineUtils.git@04776d498e3b9c87149c62dcb5a20d0dc9cf7851',
+    'affildb @ git+https://github.com/seasidesparrow/ADSAffilDB@redesign.2025',
     'sphinx-rtd-theme',
 
 ]
@@ -62,17 +63,17 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov=SciXTEMPLATE/TEMPLATE --cov=SciXTEMPLATE/API --cov-report=term-missing"
+addopts = "--cov=SciXAugment/augment --cov=SciXAugment/API --cov-report=term-missing"
 cache_dir = ".tmp/"
 testpaths = [
-    "SciXTEMPLATE/tests",
+    "SciXAugment/tests",
 ]
 pythonpath = [
-    "SciXTEMPLATE/",
+    "SciXAugment/",
 ]
 
 [tool.coverage.run]
-data_file = "SciXTEMPLATE/.coverage"
+data_file = "SciXAugment/.coverage"
 
 [tool.coverage.report]
 skip_empty = true
@@ -80,7 +81,7 @@ skip_covered = true
 
 [tool.isort]
 profile = "black"
-known_first_party = ["TEMPLATE", "API", "tests",]
+known_first_party = ["Augment", "API", "tests",]
 
 [tool.black]
 line-length = 99 # override black's default line-length
