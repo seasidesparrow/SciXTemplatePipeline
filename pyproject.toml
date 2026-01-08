@@ -1,7 +1,7 @@
 [project]
-name = "SciXTEMPLATE"
+name = "SciXAugment"
 version = "0.0.1"
-description = "The primary TEMPLATE unit for the new NASA Science Explorer (NASA SciX) backoffice architecture"
+description = "The primary data augmentation unit for the new NASA Science Explorer (NASA SciX) backoffice architecture"
 authors = [{ name = "First Last", email = "name@domain.root"}]
 license = { text = "GPL-3.0" }
 readme = "README.md"
@@ -15,7 +15,7 @@ classifiers = [
 ]
 
 packages = [
-    "SciXTEMPLATE",
+    "SciXAugment",
 ]
 
 dependencies = [
@@ -23,10 +23,9 @@ dependencies = [
     'fastavro==1.7.2',
     'avro==1.11.1',
     'redis==4.5.4',
-    'adsingestp @ git+https://github.com/adsabs/ADSIngestParser.git@b1b18900e5c70b0c3f044443bed53b53c73942f4',
     'alembic==1.8.1',
     'sqlalchemy==2.0.21',
-    'psycopg2==2.9.5',
+    'psycopg2-binary==2.9.5',
     'grpcio==1.50.0',
     'six==1.16.0',
     'python-dateutil==2.8.1',
@@ -37,7 +36,7 @@ dependencies = [
 ]
 
 [project.urls]
-Source = "https://github.com/adsabs/SciXTEMPLATEPipeline"
+Source = "https://github.com/adsabs/SciXAugmentPipeline"
 
 [project.optional-dependencies]
 dev = [
