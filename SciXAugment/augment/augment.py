@@ -15,7 +15,7 @@ from sqlalchemy.orm import sessionmaker
 from augment import db
 
 # Can we abstract this so that you don't have to add the following line?
-from affildb import augmenter
+from augment import augmenter
 
 
 def init_pipeline(proj_home):
