@@ -1,11 +1,11 @@
 [project]
-name = "SciXTEMPLATE"
+name = "SciXAugment_Affil"
 version = "0.0.1"
-description = "The primary TEMPLATE unit for the new NASA Science Explorer (NASA SciX) backoffice architecture"
-authors = [{ name = "First Last", email = "name@domain.root"}]
+description = "The primary Augment_Affil unit for the new NASA Science Explorer (NASA SciX) backoffice architecture"
+authors = [{ name = "Matthew Templeton", email = "ads@cfa.harvard.edu"}]
 license = { text = "GPL-3.0" }
 readme = "README.md"
-#repository = "https://github.com/adsabs/SciXTEMPLATEPipeline"
+#repository = "https://github.com/adsabs/SciXAugment_Affil_Pipeline"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Developers",
@@ -15,7 +15,7 @@ classifiers = [
 ]
 
 packages = [
-    "SciXTEMPLATE",
+    "SciXAugment_Affil",
 ]
 
 dependencies = [
@@ -23,7 +23,6 @@ dependencies = [
     'fastavro==1.7.2',
     'avro==1.11.1',
     'redis==4.5.4',
-    'adsingestp @ git+https://github.com/adsabs/ADSIngestParser.git@b1b18900e5c70b0c3f044443bed53b53c73942f4',
     'alembic==1.8.1',
     'sqlalchemy==2.0.21',
     'psycopg2==2.9.5',
@@ -37,7 +36,7 @@ dependencies = [
 ]
 
 [project.urls]
-Source = "https://github.com/adsabs/SciXTEMPLATEPipeline"
+Source = "https://github.com/adsabs/SciXAugment_Affil_Pipeline"
 
 [project.optional-dependencies]
 dev = [
@@ -63,17 +62,17 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov=SciXTEMPLATE/TEMPLATE --cov=SciXTEMPLATE/API --cov-report=term-missing"
+addopts = "--cov=SciXAugment_Affil/Augment_Affil --cov=SciXAugment_Affil/API --cov-report=term-missing"
 cache_dir = ".tmp/"
 testpaths = [
-    "SciXTEMPLATE/tests",
+    "SciXAugment_Affil/tests",
 ]
 pythonpath = [
-    "SciXTEMPLATE/",
+    "SciXAugment_Affil/",
 ]
 
 [tool.coverage.run]
-data_file = "SciXTEMPLATE/.coverage"
+data_file = "SciXAugment_Affil/.coverage"
 
 [tool.coverage.report]
 skip_empty = true
@@ -81,7 +80,7 @@ skip_covered = true
 
 [tool.isort]
 profile = "black"
-known_first_party = ["TEMPLATE", "API", "tests",]
+known_first_party = ["Augment_Affil", "API", "tests",]
 
 [tool.black]
 line-length = 99 # override black's default line-length
