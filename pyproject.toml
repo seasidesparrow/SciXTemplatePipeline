@@ -1,11 +1,11 @@
 [project]
-name = "SciXAugment"
+name = "SciXAffil"
 version = "0.0.1"
-description = "The primary data augmentation unit for the new NASA Science Explorer (NASA SciX) backoffice architecture"
+description = "The primary affiliation augmentation unit for the new NASA Science Explorer (NASA SciX) backoffice architecture"
 authors = [{ name = "First Last", email = "name@domain.root"}]
 license = { text = "GPL-3.0" }
 readme = "README.md"
-#repository = "https://github.com/seasidesparrow/SciXTemplatePipeline"
+#repository = "https://github.com/seasidesparrow/SciXAffilPipeline"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Developers",
@@ -15,7 +15,7 @@ classifiers = [
 ]
 
 packages = [
-    "SciXAugment",
+    "SciXAffil",
 ]
 
 dependencies = [
@@ -24,8 +24,8 @@ dependencies = [
     'avro==1.11.1',
     'redis==4.5.4',
     'alembic==1.8.1',
-    'sqlalchemy==2.0.21',
-    'psycopg2-binary==2.9.5',
+    'sqlalchemy==2.0.46',
+    'psycopg2-binary==2.9.11',
     'grpcio==1.50.0',
     'six==1.16.0',
     'python-dateutil==2.8.1',
@@ -33,11 +33,10 @@ dependencies = [
     'SciXPipelineUtils @ git+https://github.com/adsabs/SciXPipelineUtils.git@7f32c5660f6d62b62b152c984c4c2a3e401bb308',
     'affildb @ git+https://github.com/seasidesparrow/ADSAffilDB@redesign.2025',
     'sphinx-rtd-theme',
-
 ]
 
 [project.urls]
-Source = "https://github.com/adsabs/SciXAugmentPipeline"
+Source = "https://github.com/adsabs/SciXAffilPipeline"
 
 [project.optional-dependencies]
 dev = [
@@ -63,17 +62,17 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov=SciXAugment/augment --cov=SciXAugment/API --cov-report=term-missing"
+addopts = "--cov=SciXAffil/augment --cov=SciXAffil/API --cov-report=term-missing"
 cache_dir = ".tmp/"
 testpaths = [
-    "SciXAugment/tests",
+    "SciXAffil/tests",
 ]
 pythonpath = [
-    "SciXAugment/",
+    "SciXAffil/",
 ]
 
 [tool.coverage.run]
-data_file = "SciXAugment/.coverage"
+data_file = "SciXAffil/.coverage"
 
 [tool.coverage.report]
 skip_empty = true
@@ -81,7 +80,7 @@ skip_covered = true
 
 [tool.isort]
 profile = "black"
-known_first_party = ["Augment", "API", "tests",]
+known_first_party = ["SciXAffil", "API", "tests",]
 
 [tool.black]
 line-length = 99 # override black's default line-length

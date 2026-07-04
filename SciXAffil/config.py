@@ -3,19 +3,19 @@
 LOGGING_LEVEL = "DEBUG"
 LOG_STDOUT = True
 # SQLALCHEMY Configuration
-SQLALCHEMY_URL = "postgresql://augmentaff:augmentaff@localhost:5432/augmentaff"
+SQLALCHEMY_URL = "postgresql://affildb:affildb@localhost:5432/affildb"
 SQLALCHEMY_ECHO = False
 # REDIS Configuration
 REDIS_HOST = "localhost"
 REDIS_PORT = 6379
 # Kafka Configuration
-KAFKA_BROKER = "kafka:9092"
-SCHEMA_REGISTRY_URL = "http://schema-registry:8081"
-# TEMPLATE AVRO Schema Parameters
-AUGMENT_INPUT_SCHEMA = "AffilInputSchema"
-AUGMENT_INPUT_TOPIC = "AffilInput"
-AUGMENT_OUTPUT_SCHEMA = "AffilOutputSchema"
-AUGMENT_OUTPUT_TOPIC = "AffilOutput"
+KAFKA_BROKER = "localhost:9092"
+SCHEMA_REGISTRY_URL = "http://localhost:8081"
+# AFFIL AVRO Schema Parameters
+AFFIL_INPUT_SCHEMA = "AffilInputSchema"
+AFFIL_INPUT_TOPIC = "AffilInput"
+AFFIL_OUTPUT_SCHEMA = "AffilOutputSchema"
+AFFIL_OUTPUT_TOPIC = "AffilOutput"
 # S3 Configuration
 S3_PROVIDERS = ["AWS", "MINIO"]
 # AWS Configuration
@@ -29,4 +29,4 @@ AWS_BUCKET_ARN = "BUCKETARN"
 MINIO_ACCESS_KEY_ID = "admin"
 MINIO_SECRET_ACCESS_KEY = "supersecret"
 MINIO_BUCKET_NAME = "scix-AugmentAffil"
-MINIO_S3_URL = "http://minio:9000"
+MINIO_S3_URL = "http://localhost:9000"

@@ -12,10 +12,10 @@ from SciXPipelineUtils.s3_methods import load_s3_providers
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from augment import db
+from affil import db
 
 # Can we abstract this so that you don't have to add the following line?
-from augment import augmenter
+from affil.augmenter.augment_affil import AugmentAffilApp
 
 
 def init_pipeline(proj_home):
@@ -30,9 +30,9 @@ def init_pipeline(proj_home):
     consumer: The kafka consumer for the pipeline
     producer: The kafka producer for the pipeline
     """
-    app = AugmentApp(proj_home)
+    app = AugmentAffilApp(proj_home)
     app.schema_client = SchemaRegistryClient({"url": app.config.get("SCHEMA_REGISTRY_URL")})
-    schema = utils.get_schema(app, app.schema_client, app.config.get("AUGMENT_INPUT_SCHEMA"))
+    schema = utils.get_schema(app, app.schema_client, app.config.get("AFFIL_INPUT_SCHEMA"))
     consumer = AvroConsumer(
         {
             "bootstrap.servers": app.config.get("KAFKA_BROKER"),
@@ -42,18 +42,18 @@ def init_pipeline(proj_home):
         },
         reader_value_schema=schema,
     )
-    consumer.subscribe([app.config.get("AUGMENT_INPUT_TOPIC", "AUGMENT")])
+    consumer.subscribe([app.config.get("AUGMENT_INPUT_TOPIC", "AFFIL")])
     producer = AvroProducer(
         {
             "bootstrap.servers": app.config.get("KAFKA_BROKER"),
             "schema.registry.url": app.config.get("SCHEMA_REGISTRY_URL"),
         }
     )
-    app.logger.info("Starting AugmentApp")
+    app.logger.info("Starting AugmentAffilApp")
     app.template_consumer(consumer, producer)
 
 
-class AugmentApp:
+class AugmentAffilApp:
     @contextmanager
     def session_scope(self):
         """Provide a transactional scope for postgres."""

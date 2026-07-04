@@ -6,7 +6,7 @@ from alembic import context
 from SciXPipelineUtils.utils import load_config
 from sqlalchemy import engine_from_config, pool
 
-import TEMPLATE.models as models
+import affils.models as models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

@@ -1,3 +1,14 @@
+import html
+from affildb import normalize
+from affildb import db as affdb
+from SciXPipelineUtils import utils
+from SciXPipelineUtils.scix_uuid import scix_uuid as uuid
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+
+# define the AffilAugmenter class, then create task that calls it.
 
 class AffilAugmenter(object):
     def __init__(self):
@@ -92,3 +103,41 @@ class AffilAugmenter(object):
         self.author_data = author_data
         self._build_output()
         return self.output
+
+
+def augment_storage_record(app, record, norm):
+    # Receives msgs with master_pipeline.records.bib_data format
+    # Sends msgs with master_pipeline.records.augments format
+    try:
+        
+        author_data = []
+        affils = record.get("aff", [])
+        found = {}
+        for auth in affils:
+            auth = html.unescape(auth)
+            alist = auth.split(";")
+            author_aff = []
+            for a in alist:
+                if norm:
+                    query_string = normalize.normalize_string(a,
+                        kill_spaces = app.conf.get("NORM_KILL_SPACES", False),
+                        upper_case = app.conf.get("NORM_UPPER_CASE", False)
+                    )
+                else:
+                    query_string = normalize.clean_string(a)
+                # if you've already found this string, don't bother
+                # querying the database again
+                if found.get(query_string, None):
+                    res = found.get(query_string)
+                else:
+                    res = affdb.query_one_string(app, query_string, norm)
+                    found[query_string] = res
+                author_aff.append(res)
+            author_data.append(author_aff)
+        augment_affil = aa().parse(record, author_data)
+        augment_affil["record_id"] = uuid.uuid7()
+        return augment_affil
+    except Exception as err:
+        logger.error("Record affil augment failed: %s" % err)
+
+
