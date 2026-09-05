@@ -1,14 +1,14 @@
 import datetime
 import logging as logger
 
-import TEMPLATE.models as models
+import Augment_Affil.models as models
 
 logger.basicConfig(level=logger.DEBUG)
 
 
 def write_status_redis(redis_instance, status):
     logger.debug("Publishing status: {}".format(status))
-    redis_instance.publish("TEMPLATE_statuses", status)
+    redis_instance.publish("Augment_Affil_statuses", status)
 
 
 def get_job_status_by_job_hash(cls, job_hashes, only_status=None):
@@ -94,31 +94,31 @@ def update_job_status(cls, job_hash, status=None):
     return updated
 
 
-def write_TEMPLATE_record(cls, record_id, date, s3_key, checksum, source):
+def write_Augment_Affil_record(cls, record_id, date, s3_key, checksum, source):
     """
     Write harvested record to db.
     """
     success = False
     with cls.session_scope() as session:
-        TEMPLATE_record = models.TEMPLATE_record()
-        TEMPLATE_record.id = record_id
-        TEMPLATE_record.s3_key = s3_key
-        TEMPLATE_record.date = date
-        TEMPLATE_record.checksum = checksum
-        TEMPLATE_record.source = source
-        session.add(TEMPLATE_record)
+        Augment_Affil_record = models.Augment_Affil_record()
+        Augment_Affil_record.id = record_id
+        Augment_Affil_record.s3_key = s3_key
+        Augment_Affil_record.date = date
+        Augment_Affil_record.checksum = checksum
+        Augment_Affil_record.source = source
+        session.add(Augment_Affil_record)
         session.commit()
         success = True
     return success
 
 
-def get_TEMPLATE_record(session, record_id):
+def get_Augment_Affil_record(session, record_id):
     """
     Return record with UUID: record_id
     """
     record_db = (
-        session.query(models.TEMPLATE_record)
-        .filter(models.TEMPLATE_record.id == record_id)
+        session.query(models.Augment_Affil_record)
+        .filter(models.Augment_Affil_record.id == record_id)
         .first()
     )
     return record_db
